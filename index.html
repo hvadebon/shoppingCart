@@ -82,23 +82,39 @@
 
 		}
 		
-		Register.prototype.cartTrack = function () {
-			
-			this.count = localStorage.getItem('click');
-			this.countIt = function () {
-					if (localStorage.getItem('click', 1)) {
-						localStorage.setItem('click', parseInt(this.count) + 1);
-						console.log(this.count);
-						//call the registration form function
-
-					} else {
-						localStorage.setItem('click', 1);
-						console.log(this.count);
-					}
-				}
-			
-			
-		}
+//		Register.prototype.checkStorage = function (){
+//			this.count = localStorage.getItem('click');
+//			{
+//					if (localStorage.getItem('click', 1)) {
+//						console.log('already a user');
+//						myRegister.cr
+//						//call the registration form function
+//
+//					} else {
+//						localStorage.setItem('click', 1);
+//						myRegister.createForm();
+//					}
+//				} //end this.countIt
+//
+//		}
+//		
+//		Register.prototype.cartTrack = function () {
+//			
+//			this.count = localStorage.getItem('click');
+//			this.countIt = function () {
+//					if (localStorage.getItem('click', 1)) {
+//						localStorage.setItem('click', parseInt(this.count) + 1);
+//						console.log(this.count);
+//						//call the registration form function
+//
+//					} else {
+//						localStorage.setItem('click', 1);
+//						console.log(this.count);
+//					}
+//				}
+//			
+//			
+//		}
 
 		//function showform, takes in two params, (div id, output)
 		Register.prototype.showView = function (showform, view) {
@@ -258,7 +274,7 @@
 		address +='<label>Zip</label>';
 		address +='<input type="text" id="zip" class="form-control" />';
 		address +='<br/><hr/>';
-		address +='<button class="btn btn-success" onclick="myRegister.sForm">Ship it to me!</button>';
+		address +='<button class="btn btn-success" onclick="myRegister.sForm()">Ship it to me!</button>';
 		
 
 		document.getElementById('showProds').innerHTML = address;
@@ -268,22 +284,32 @@
         //Save form inputs to localStorage
        Register.prototype.sForm = function(address) {
             //Get form values
-            var st = document.getElementById('street').value;
-            var cit = document.getElementById('city').value;
-            var st = document.getElementById('state').value;
-            var zi = document.getElementById('zip').value;
+            var st = document.getElementById('street');
+		   var street = st.value;
+            var cit = document.getElementById('city');
+			var city = cit.value;
+            var st = document.getElementById('state');
+			var state = st.value;
+            var zi = document.getElementById('zip');
+			var zip = zi.value;
             
-		   this.userArr.push('st', 'cit', 'st', 'zi');
+		   this.userArr.push('street', 'city', 'state', 'zip');
 			console.log(this.userArr);
 		   console.log('success!');
+		   myRegister.success();
 			
 		}
+	   
+	   Register.prototype.success = function () {
+		   document.getElementById('showProds').innerHTML = '<h3>Congrats, your coffee is on it\'s way!<h3>';
+		   
+	   }
 			
 		
 //new instance for HTML 
 		var myRegister = new Register();
 		var view = myRegister.createForm();
-		myRegister.cartTrack();
+		//myRegister.checkStorage();
 		myRegister.showView(showform, view);
 
 		
