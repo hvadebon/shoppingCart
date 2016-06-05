@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
+
+	<title>Shop Coffee With Me!</title>
+
+	<!--  -->
+
+	<style>
+		.btn-default {
+			background-color: lightblue;
+		}
+		
+	</style>
+
+</head>
+
+<body>
+	<div class="container">
+	<div id="menu">
+		<div class="row">
+			
+<img src="img/coffee-word.png" style="width: 200px"/>
+<button class="btn btn-default" onclick="myRegister.buildCart()" style="float:right">Cart</button>
+			</div>
+	</div>
+	
+		<div id="showform"></div>
+		<div id="showProds"></div>
+		<div id="close"></div>
+	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+	<script>
+		//HELP//
+		//now, this runs, but the function call is not incorporated. how do i call a prototype of another function?
+//		function CartTrack() {
+//
+//			this.count = localStorage.getItem('click');
+//			this.countIt = function () {
+//					if (localStorage.getItem('click', 1)) {
+//						localStorage.setItem('click', parseInt(this.count) + 1);
+//						console.log(this.count);
+//						//call the registration form function
+//
+//					} else {
+//						localStorage.setItem('click', 1);
+//						console.log(this.count);
+//					}
+//				} //end this.countIt
+//		} //end CartTrack
+//
+//		var runIt = new CartTrack();
+//		runIt.countIt();
+
+		//constructor function
+		function Register() {
+			this.userArr = [];
+			this.model =
+
+				[['1', 'Coffee', '/img/cupcoffee.png', '1.50'],
+				['2', 'Coffee To Go', '/img/cup_togo.png', '1.65'],
+				['3', 'Fancy Coffee with WHIP', '/img/hotcoffee.jpg', '3.00'],
+				['4', 'Iced Coffee', '/img/iced-coffee.jpg', '2.25'],
+				['5', 'Extra Fancy Coffee', '/img/mocha_shit1.png', '4,50'],
+				['6', 'Pretty Coffee', '/img/sun-cup-art.png', '3.25']];
+
+			//push qty to array with correct product key
+			this.incart = [];
+			
+			this.cartqty = [];
+			//	
+			//save uers info in array here
+			this.userIds = [[]];
+
+
+		}
+		
+		Register.prototype.cartTrack = function () {
+			
+			this.count = localStorage.getItem('click');
+			this.countIt = function () {
+					if (localStorage.getItem('click', 1)) {
+						localStorage.setItem('click', parseInt(this.count) + 1);
+						console.log(this.count);
+						//call the registration form function
+
+					} else {
+						localStorage.setItem('click', 1);
+						console.log(this.count);
+					}
+				}
+			
+			
+		}
+
+		//function showform, takes in two params, (div id, output)
+		Register.prototype.showView = function (showform, view) {
+			document.getElementById('showform').innerHTML = view;
+		}
+
+		Register.prototype.createForm = function () {
+				var form = ' ';
+
+				form += '<h1>Register to shop for coffee</h1>'
+				form += '<label>First Name</label>';
+				form += '<input type="text" id="firstName" class="form-control" />';
+				form += '<label>Last Name</label>';
+				form += '<input type="text" id="lastName" class="form-control" />';
+				form += '<label>Email</label>';
+				form += '<input type="text" id="email" class="form-control" />';
+				form += '<label>Create Password</label>';
+				form += '<input type="text" id="password" class="form-control" />';
+				form += '<label>Age</label>';
+				form += '<input type="text" id="age" class="form-control" />';
+
+				form += '<hr/>';
+				form += '<button class="btn btn-success" onclick="myRegister.saveForm(), myRegister.buildProducts();">Shop!</button>';
+				form += '<br/>';
+				form += '</div>';
+
+				return form;
+
+			} //end createForm
+
+
+		//Save form inputs to localStorage
+		Register.prototype.saveForm = function () {
+				//Get form values
+				var fname = document.getElementById('firstName').value;
+				var lname = document.getElementById('lastName').value;
+				var em = document.getElementById('email').value;
+				var pw = document.getElementById('password').value;
+				var age = document.getElementById('age').value;
+
+			this.userArr.push('fname', 'lname', 'em', 'pw', 'age', 'fp');
+			console.log(this.userArr);
+			//Save to localstorage
+			localStorage.setItem('user', this.userArr);
+
+				
+		} //close saveForm function
+
+
+
+
+		Register.prototype.buildProducts = function () {
+
+				var arr = [];
+				//	for(var i=0; i<this.model.length; i++);
+				//	var inProd = this.model.length;
+				for (var i = 0; i < this.model.length; i++) {
+
+					var productPanels = ' ';
+
+					productPanels += '<div class="col-md-3 col-sm-6 col-md-offset-1"><div class="panel panel-default pd"><div class="panel-body">';
+					productPanels += '<img src="' + this.model[i][2] + '" class="img img-responsive"/><hr/>';
+					productPanels += '<p> Price: ' + this.model[i][3] + '</p>';
+					productPanels += '<h3 class="text:center">' + this.model[i][1] + '</h3><br/>';
+					productPanels += '<p class="text:center">product description</p><br/>';
+					productPanels += '<button class="btn btn-success pull-right" onclick="myRegister.addToCart('+this.model[i][0]+')"><small>Add to cart</small></button>';
+					productPanels += '<label>Quantity: </label><input type="number" id='+ this.model[i][0] + ' min="0" max="20" value="1">';
+				
+					productPanels += '</div></div></div>';
+
+					arr.push(productPanels);
+
+				}
+				console.log(arr);
+				this.showProducts(arr);
+
+			} //end of buildProducts
+
+		Register.prototype.showProducts = function (arr) {
+			document.getElementById('showform').innerHTML = '';
+			
+
+			for (var i = 0; i < arr.length; i++) {
+				document.getElementById('showProds').innerHTML += arr[i];
+			}
+		}
+		
+		//takes in one parameter the id of the product i'm adding, val
+		Register.prototype.addToCart = function (val){
+			console.log(val);
+			//checks the qty
+			var qty = document.getElementById(val).value;
+			console.log(qty);
+			//val - 1 gets the prod id and the prod info from the model arr
+			var prod = this.model[val - 1];
+			//pushing the prod description and qty to cartqty
+			var price = this.model[val - 1][3];
+			parseFloat(price);
+			console.log(price, qty)
+			var total = parseInt(qty) * parseFloat(price);
+			console.log(total);
+			
+			prod.push(qty,total);
+			
+			
+			
+			this.cartqty.push(prod);
+			console.log(this.cartqty);
+				
+		}
+		
+		Register.prototype.buildCart = function (){
+			//document.getElementById('showProds').innerHTML = '';
+			
+			var cart = '';
+			var total = 0.00;
+			
+			for (var i=0; i<this.cartqty.length; i++){
+	
+			cart += '<div><img src="' + this.cartqty[i][2] + '" class="img img-responsive" style="width: 100px;"/> ';
+			cart += '<h3 class="text">' + this.cartqty[i][1] + '</h3><br/>';
+			cart += '<p> Product Description </p>';
+			cart += '<p> Price: ' + this.cartqty[i][3] + '</p>';
+			cart += '<hr/></div> ';
+			total+=	
+				this.cartqty[i][3] * this.cartqty[i][4];
+			
+			var checkButton = '';
+				cart += '<h2> Subtotal = $'+total +'</h4><br/>';
+				checkButton += '<br/><button class="btn btn-success" onclick="myRegister.buildShipping()">Checkout!</button>';
+				
+			
+			}
+		this.showCart(cart, checkButton);
+		}
+			
+	
+		Register.prototype.showCart = function (cart, checkButton) {
+			document.getElementById('showProds').innerHTML = cart;
+			document.getElementById('close').innerHTML = checkButton;
+		}
+		
+	Register.prototype.buildShipping = function () {
+			
+		document.getElementById('showProds').innerHTML = '';
+		document.getElementById('close').innerHTML = '';
+
+		var address = ' ';
+				
+		address +='<h3>Shipping Address:</h3>';
+		address +='<label>Street</label>';
+		address +='<input type="text" id="street" class="form-control" />';
+		address +='<label>City</label>';
+		address +='<input type="text" id="city" class="form-control" />';
+		address +='<label>State</label>';
+		address +='<input type="text" id="state" class="form-control" />';
+		address +='<label>Zip</label>';
+		address +='<input type="text" id="zip" class="form-control" />';
+		address +='<br/><hr/>';
+		address +='<button class="btn btn-success" onclick="myRegister.sForm">Ship it to me!</button>';
+		
+
+		document.getElementById('showProds').innerHTML = address;
+		myRegister.saveForm(address);
+		}
+
+        //Save form inputs to localStorage
+       Register.prototype.sForm = function(address) {
+            //Get form values
+            var st = document.getElementById('street').value;
+            var cit = document.getElementById('city').value;
+            var st = document.getElementById('state').value;
+            var zi = document.getElementById('zip').value;
+            
+		   this.userArr.push('st', 'cit', 'st', 'zi');
+			console.log(this.userArr);
+		   console.log('success!');
+			
+		}
+			
+		
+//new instance for HTML 
+		var myRegister = new Register();
+		var view = myRegister.createForm();
+		myRegister.cartTrack();
+		myRegister.showView(showform, view);
+
+		
+	</script>
+
+</body>
+
+</html>
